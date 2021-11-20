@@ -1,0 +1,37 @@
+version: "3.3"
+services:
+  database:
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  hasura:
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - 8888:8080
+    build:
+      context: ./hasura
+      dockerfile: Dockerfile
+    environment:
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_DATABASE_URL: "postgres://postgres:password@database:5432/postgres"
+    volumes:
+      - "./hasura/app/migrations:/hasura-migrations"
+      - "./hasura/app/metadata:/hasura-metadata"
+
+#  TODO: finish this
+#  webhooks:
+#    depends_on:
+#      hasura:
+#        condition: service_started
+#    build:
+#      context: ./webhooks
