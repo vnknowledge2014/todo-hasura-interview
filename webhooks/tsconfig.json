@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "rootDir": "./src",
     "outDir": "./dist",
     "moduleResolution": "node",
     "module": "commonjs",
@@ -8,7 +9,10 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "inlineSources": true,
-    "types": ["node"],
+    "types": [
+      "node",
+      "@types/jest"
+    ],
     "lib": [
       "esnext",
       "es2015.proxy"
@@ -30,6 +34,7 @@
     "deployment",
     "node_modules",
     "dist",
-    "coverage"
+    "coverage",
+    "**/test/*.spec.ts"
   ]
 }

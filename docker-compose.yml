@@ -21,17 +21,26 @@ services:
       context: ./hasura
       dockerfile: Dockerfile
     environment:
-      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_DEV_MODE: "false"
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       HASURA_GRAPHQL_DATABASE_URL: "postgres://postgres:password@database:5432/postgres"
+      HASURA_GRAPHQL_ADMIN_SECRET: "b98c75f6-1319-44c7-a5d7-9abd1c8e3a1f"
     volumes:
       - "./hasura/app/migrations:/hasura-migrations"
       - "./hasura/app/metadata:/hasura-metadata"
 
-#  TODO: finish this
-#  webhooks:
-#    depends_on:
-#      hasura:
-#        condition: service_started
-#    build:
-#      context: ./webhooks
+  #  TODO: finish this
+  webhooks:
+    depends_on:
+      hasura:
+        condition: service_started
+    ports:
+      - "8989:8989"
+      - "9222:9229"
+    build:
+      context: ./webhooks
+      dockerfile: Dockerfile
+    command: npm start
+    volumes:
+      - ./webhooks/:/usr/app
+      - /usr/app/node_modules
