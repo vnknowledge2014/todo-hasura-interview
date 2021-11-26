@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../src/types/Todo/index.ts"],"names":[],"mappings":"","sourcesContent":["export type Todo = {\n    id: string;\n    title: string;\n    completed: boolean;\n    created_at: string;\n    updated_at: string;\n    user_id: string;\n}"]}
